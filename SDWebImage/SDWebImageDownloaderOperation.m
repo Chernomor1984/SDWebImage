@@ -421,6 +421,12 @@ didReceiveResponse:(NSURLResponse *)response
              *  So we don't need to check the cache option here, since the system will obey the cache option
              */
             if (self.imageData) {
+                // trying to read base64 string
+                NSData *loadedData = [[NSData alloc] initWithBase64EncodedString:(NSString *)self.imageData options:NSDataBase64DecodingIgnoreUnknownCharacters];
+                
+                if (loadedData){
+                    self.imageData = [loadedData mutableCopy];
+                }
                 UIImage *image = [UIImage sd_imageWithData:self.imageData];
                 NSString *key = [[SDWebImageManager sharedManager] cacheKeyForURL:self.request.URL];
                 image = [self scaledImageForKey:key image:image];
